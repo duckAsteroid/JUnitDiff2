@@ -17,9 +17,16 @@ public abstract class Source
 	 */
 	public abstract InputStream open() throws IOException;
 
+	/**
+	 * The name of the source (as appears in output)
+	 * @return The name of this source file
+	 */
 	public abstract String getName();
 
 
+	/**
+	 * A source that is a plain old XML file in the filesystem
+	 */
 	public static class FileSource extends Source
 	{
 
@@ -49,6 +56,9 @@ public abstract class Source
 		}
 	}
 
+	/**
+	 * A source that is an XML file in a ZIP file
+	 */
 	public static class ZipEntrySource extends Source
 	{
 

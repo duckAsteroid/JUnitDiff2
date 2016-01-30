@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Created by Chris on 29/01/2016.
+ * Writes a CSV from the model
  */
 public class CsvWriter
 {

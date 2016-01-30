@@ -14,13 +14,21 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 /**
- * Created by Chris on 28/01/2016.
+ * The program entry point for JUnitDiff2
  */
 public class Main
 {
+	/** Code returned if there is a fatal error processing input */
 	public static final int EXIT_ERROR = -1;
 
 
+	/**
+	 * Entry point -
+	 * parses arguments {@link #expandArgs(String[])}
+	 * performs analysis {@link #analyse(AnalysisInput)}
+	 * reports results {@link #writeOutput(Model, String)}
+	 * @param args Program arguments see {@link #printUsage()}
+	 */
 	public static final void main(String ... args) {
 		AnalysisInput input = expandArgs(args);
 		if (input.getInputSources().size() < 2) {
@@ -45,59 +53,15 @@ public class Main
 		System.exit(m.getIDs().size());
 	}
 
-
-	private static void writeOutput(Model m, String outputFile) throws IOException
+	/**
+	 * Tell the user how to use this program if the args are bad
+	 */
+	private static void printUsage()
 	{
-		System.out.println("Writing results to "+outputFile);
-		CsvWriter writer = new CsvWriter(m, new File(outputFile));
-		writer.write();
-		writer.close();
+		System.out.println("You must supply arguments (either files, ZIP file(s) or >=1 directories) - that yield 2 or more files for comparison");
+		System.out.println("To change output file use the -output=<filename> option (default "+AnalysisInput.DEFAULT_OUTPUT+")");
+		System.out.println("The class names can be mapped using an optional -mapping=<properties filename>");
 	}
-
-
-	private static Model analyse(AnalysisInput input)
-	{
-		List<Source> inputSources = input.getInputSources();
-		Model result = new Model(inputSources);
-		// mappings are used to adjust the result for renamed tests
-		String mappingFile = input.getOption("mapping");
-		Properties mapping = new Properties();
-		if (mappingFile != null) {
-			try
-			{
-				mapping.load(new FileInputStream(mappingFile));
-				System.out.println("Mappings loaded: "+mapping.size());
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		// load the data from the files
-		System.out.println("Analysing " + inputSources.size() + " test files:");
-		for (Source src : input.getInputSources())
-		{
-			try
-			{
-				System.out.print('.');
-				XMLReader xmlReader = XMLReaderFactory.createXMLReader();
-				xmlReader.setContentHandler(new Reader(mapping, src, result));
-				InputSource saxInput = new InputSource(src.open());
-				xmlReader.parse(saxInput);
-			}
-			catch (SAXException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
-		}
-		System.out.println("DONE");
-		return result;
-	}
-
 
 	/**
 	 * Parse the input arguments and expand into a set of sources/resources and options encapsulated in an analysis input
@@ -123,7 +87,6 @@ public class Main
 		}
 		return result;
 	}
-
 
 	/**
 	 * Parse what might be a java.io.File argument
@@ -175,7 +138,6 @@ public class Main
 		}
 	}
 
-
 	/**
 	 * Add an XML file to the input
 	 * @param input the input to update
@@ -191,11 +153,67 @@ public class Main
 
 
 	/**
-	 * Tell the user how to use this
+	 * Analyse the input to create the model
+	 * @param input the analysis input configuration
+	 * @return a new model derived from the input
 	 */
-	private static void printUsage()
+	private static Model analyse(AnalysisInput input)
 	{
-		System.out.println("You must supply arguments (either files, ZIP file(s) or >=1 directories) - that yield 2 or more files for comparison");
+		List<Source> inputSources = input.getInputSources();
+		Model result = new Model(inputSources);
+
+		// mappings are used to adjust the result for renamed tests
+		String mappingFile = input.getOption("mapping");
+		Properties mapping = new Properties();
+		if (mappingFile != null) {
+			try
+			{
+				mapping.load(new FileInputStream(mappingFile));
+				System.out.println("Mappings loaded: "+mapping.size());
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		// load the data from each of the sources
+		System.out.println("Analysing " + inputSources.size() + " test files:");
+		for (Source src : input.getInputSources())
+		{
+			try
+			{
+				System.out.print('.');
+				XMLReader xmlReader = XMLReaderFactory.createXMLReader();
+				xmlReader.setContentHandler(new Reader(mapping, src, result));
+				InputSource saxInput = new InputSource(src.open());
+				xmlReader.parse(saxInput);
+			}
+			catch (SAXException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+		System.out.println("DONE");
+		return result;
 	}
 
+
+	/**
+	 * Writes the model to the output file configured in the input params (if specified)
+	 * @param m the model
+	 * @param outputFile the file to write
+	 * @throws IOException If something bad happens writing the file
+	 */
+	private static void writeOutput(Model m, String outputFile) throws IOException
+	{
+		System.out.println("Writing results to "+outputFile);
+		CsvWriter writer = new CsvWriter(m, new File(outputFile));
+		writer.write();
+		writer.close();
+	}
 }

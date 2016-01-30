@@ -1,7 +1,7 @@
 package org.duck.asteroid.junitdiff;
 
 /**
- * Created by Chris on 28/01/2016.
+ * The state of a particular test result
  */
 public enum TestState
 {

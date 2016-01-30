@@ -11,12 +11,14 @@ import java.util.Map;
 import java.util.zip.ZipFile;
 
 /**
- * Created by Chris on 29/01/2016.
+ * A class gathering together the input to the analysis.
+ * A list of sources and resources, and some properties
  */
 public class AnalysisInput
 {
 	public static final String OPT_OUTPUT = "output";
-	private static final String DEFAULT_OUTPUT = "comparison.csv";
+
+	static final String DEFAULT_OUTPUT = "comparison.csv";
 
 	private final List<Source> inputSources = new ArrayList<>();
 

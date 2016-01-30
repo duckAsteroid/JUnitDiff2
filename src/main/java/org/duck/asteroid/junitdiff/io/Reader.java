@@ -1,6 +1,5 @@
 package org.duck.asteroid.junitdiff.io;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import org.duck.asteroid.junitdiff.Model;
 import org.duck.asteroid.junitdiff.TestID;
 import org.duck.asteroid.junitdiff.TestResult;
@@ -8,7 +7,6 @@ import org.duck.asteroid.junitdiff.TestState;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -16,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Reads data from a test file and adds it to a model
+ * Using SAX reads data from a test file (XML) and adds it to a model
  */
 public class Reader extends org.xml.sax.helpers.DefaultHandler
 {
@@ -36,7 +34,7 @@ public class Reader extends org.xml.sax.helpers.DefaultHandler
 	private final Model model;
 	private final Source source;
 	private final Properties mapping;
-	private final Map<String, Pattern> patternCache = new HashMap<>();
+	private final Map<String, Pattern> patternCache = new HashMap<String, Pattern>();
 
 	private TestID currentId;
 	private TestResult currentResult;
