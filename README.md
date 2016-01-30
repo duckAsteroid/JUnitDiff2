@@ -2,6 +2,8 @@
 Summarises many JUnit test result files in a single file.
 Uses no external dependencies (pure Java 8).
 
+[![Build Status](https://travis-ci.org/duckAsteroid/JUnitDiff2.svg?branch=master)](https://travis-ci.org/duckAsteroid/JUnitDiff2)
+
 ## Result
 The program produces a CSV file with a header row - two columns containing the classname and test name; followed by two columns for each test file in the input (source name and duration).
 
@@ -26,3 +28,4 @@ each line consists of:
 
 The regex is expected to identify target classes and have a single group identified for replacement (e.g. com\.acme\.(old\.)package)
 The replacement string (which may be empty) is used to replace the group - so a replacement of "new" yields com.acme.new.package in the resulting TestID
+
