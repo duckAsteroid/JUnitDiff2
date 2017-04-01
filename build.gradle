@@ -1,11 +1,11 @@
-group 'com.duck.asteroid'
-version '1.0.0'
-
 plugins {
     id "com.jfrog.bintray" version "1.7.3"
 }
 
 apply plugin: 'java'
+
+group 'com.duck.asteroid'
+version '1.0.0'
 
 compileJava {
     sourceCompatibility = 1.8
