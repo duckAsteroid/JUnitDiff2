@@ -1,10 +1,7 @@
 sudo: false
-
 language: java
 jdk: oraclejdk8
-
 skip_cleanup: true
-
 deploy:
   provider: releases
   api_key:
@@ -14,3 +11,5 @@ deploy:
     tags: true
     repo: duckAsteroid/JUnitDiff2
     branch: master
+env:
+  secure: xjhZui9E8kqn2gomE/nxapr3PT0+9szo0f3TV8NlMi23h6QPlVt7VBQJkZULQ8tHSB/ZJ+g6fZNXlrlkO7AlF9Dnzfmmaw/PlBgN7POyfju9f6umaDj1b7KptppGt6QvFl4HuF6UWUwND/GrAdKVQsmwgMN/5jTKJraoFdM5Vu/C1DIBRCDFCaKTjBJ05F0pTNWtqQSRpLLwQw2Ha/OzjHNSviYa5UDVa0+GKgeF/fSVWLXAjRRrPwG8yLbkNCIBFsxV4hODvHPAK5lQyT4FoVoqhhmvTLCCHESJc4Y8dGzYkBQKggRJbBHR7oKX1zzV5WyeEIOS/V9hHoX09wX2I47kPx7Kmt8QRFxhJ4lcwD171QVnj4ylVdIDuqESDhaOh+sK6tQrX90VgU5dggDxybwuLBXVux3Ha6M5xtC52/+dqK0xCHbZUIo4/xmbDaqnTTPfXdPFmSE18fF8zOcZkQlr3aBcFl0RKDJ3aaPa3JBjapF2iMX4/5s8VRWosUDNXOezkaiDUuMu8IgKLlU46t+aykJox+hdCw8FIQEX+rN5FVkfQ4UGEo7aeWnEBspcHcW9wgJjy/qt2042aRumFpflHzaqj1XHwdo/tGh0R+urSZJutL8oCyqPxgcvAAAAVQWNEuafvYyoTWMieTNCENVBwLonRm9SauUyD2BwIPw=

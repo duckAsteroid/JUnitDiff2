@@ -1,10 +1,20 @@
 group 'com.duck.asteroid'
 version '1.0.0'
 
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'java'
 
 compileJava {
     sourceCompatibility = 1.8
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.duck.asteroid.junitdiff.Main'
+    }
 }
 
 repositories {
@@ -13,4 +23,34 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+publishing {
+    publications {
+        mainMaven(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+bintray {
+    user = 'duckasteroid'
+    key = "$System.env.BINTRAY_KEY"
+    pkg {
+        repo = 'maven'
+        name = 'JunitDiff2'
+        userOrg = 'JUnitDiff2'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/duckAsteroid/JUnitDiff2.git'
+        version {
+            name = "$project.version"
+            released = new Date()
+            vcsTag = "$project.version"
+        }
+    }
+    // Whether version should be auto published after an upload
+    publish = true
+    // Whether to override version artifacts already published
+    override = true
+    publications = ['mainMaven']
 }
